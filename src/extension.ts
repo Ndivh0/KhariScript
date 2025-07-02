@@ -49,6 +49,58 @@ Please suggest relevant components, helper functions, file structures, or any te
 	context.subscriptions.push(analyzeDisposable, brainstormDisposable);
 }
 
+import {generateEmbedding} from './embedding';
+import {generateTags} from './tags';
+import {saveToVault} from './storage';
+import {retrieveRelevantEntry} from './retrieve';
+
+const storDisposable = vscode.commands.registerCommand('khariscript.storeContext', async() => {
+//Get active text editor
+const editor = vscode.window.activeTextEditor;
+if (!editor) {
+	vscode.window.showErrorMessage('No active text editor');
+	return;
+}
+
+//Get selected code 
+const selection = editor.selection;
+const selectedText = editor.document.getText(selectedText);
+
+//Warn if nothing is selected
+if (!selectedText.trim()) {
+	vscode.window.showErrorMessage('Please select code to analyze');
+	return;
+}
+
+//Search for the most relevant stored entry using lightweight embedding
+const result = retrieveRelevantEntry(selectedText);
+
+//Notify if nothing found
+if (!result) {
+	vscode.window.showInformationMessage('No relevant context found.');
+	return;
+}
+
+ // Build preview with basic metadata and a content snippet
+const preview = `
+📁 Source: ${result.source}
+🏷️ Tags: ${result.tags.join(', ')}
+🕒 Saved: ${result.timestamp}
+
+🧠 Content:
+${result.content.substring(0, 500)}
+`;
+
+//Show matching result in a read only webvirew panel
+const panel = vscode.window.createWebviewPanel(
+	'KhariScriptContextResult',
+	'KhariScript - Context Match',
+	vscode.ViewColumn.Beside,
+	{}
+);
+
+panel.webview.html = `<pre style="padding:1rem;">${preview}</pre>`;
+});
 // Loads the HTML file from the media folder and injects secure URIs
 function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): string {
 	const path = require('path');
