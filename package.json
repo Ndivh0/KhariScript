@@ -7,16 +7,22 @@
     "vscode": "^1.101.0"
   },
   "categories": [
+    
     "Other"
   ],
   "activationEvents": [],
+  "onCommand": [
+    "khariscript.brainstorm";
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "khariscript.helloWorld",
-        "title": "Hello World"
+       "command": "khariscript.brainstorm",
+        "title": "💡 Brainstorm with KhariScript";
       }
+
+
     ]
   },
   "scripts": {
