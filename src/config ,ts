@@ -13,4 +13,3 @@ export function getVaultPath(): string {
     // fallback to default vault in home directory
     return path.join(os.homedir(), '.kharivault.json');
 }
-
