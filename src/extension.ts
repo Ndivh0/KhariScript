@@ -1,5 +1,3 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as dotenv from 'dotenv';
@@ -7,100 +5,6 @@ import fetch from 'node-fetch';
 
 dotenv.config();
 
-
-// This function runs when the extension is activated
-export function activate(context: vscode.ExtensionContext) {
-	console.log('KhariScript extension is now active!');
-
-	// Register the 'analyzeCode' command
-	const analyzeDisposable = vscode.commands.registerCommand('khariscript.analyzeCode', async () => {
-		const editor = vscode.window.activeTextEditor;
-		if (!editor) {
-			vscode.window.showErrorMessage('No active text editor found.');
-			return;
-		}
-	});
-
-	// Register the 'brainstorm' command
-	const brainstormDisposable = vscode.commands.registerCommand('khariscript.brainstorm', async () => {
-		const panel = vscode.window.createWebviewPanel(
-			'KhariScriptBrainstorm',
-			'KhariScript Brainstorm',
-			vscode.ViewColumn.One,
-			{ enableScripts: true }
-		);
-		panel.webview.html = getWebviewContent(panel.webview, context.extensionUri);
-
-		// GPT prompt handler for brainstorming
-		panel.webview.onDidReceiveMessage(async (message) => {
-			if (message.type === 'brainstorm') {
-				const brainstormPrompt = `
-You are a senior software engineer with expertise in brainstorming and project planning.
-Your task is to help the user brainstorm ideas based on this input:
-"${message.prompt}"
-Please suggest relevant components, helper functions, file structures, or any technical suggestions that might assist the user. Respond in clear sections.
-`;
-				const response = await askGPT(brainstormPrompt);
-				panel.webview.postMessage({ type: 'response', data: response });
-			}
-		});
-	});
-
-	context.subscriptions.push(analyzeDisposable, brainstormDisposable);
-}
-
-import {generateEmbedding} from './embedding';
-import {generateTags} from './tags';
-import {saveToVault} from './storage';
-import {retrieveRelevantEntry} from './retrieve';
-
-const storDisposable = vscode.commands.registerCommand('khariscript.storeContext', async() => {
-//Get active text editor
-const editor = vscode.window.activeTextEditor;
-if (!editor) {
-	vscode.window.showErrorMessage('No active text editor');
-	return;
-}
-
-//Get selected code 
-const selection = editor.selection;
-const selectedText = editor.document.getText(selectedText);
-
-//Warn if nothing is selected
-if (!selectedText.trim()) {
-	vscode.window.showErrorMessage('Please select code to analyze');
-	return;
-}
-
-//Search for the most relevant stored entry using lightweight embedding
-const result = retrieveRelevantEntry(selectedText);
-
-//Notify if nothing found
-if (!result) {
-	vscode.window.showInformationMessage('No relevant context found.');
-	return;
-}
-
- // Build preview with basic metadata and a content snippet
-const preview = `
-📁 Source: ${result.source}
-🏷️ Tags: ${result.tags.join(', ')}
-🕒 Saved: ${result.timestamp}
-
-🧠 Content:
-${result.content.substring(0, 500)}
-`;
-
-//Show matching result in a read only webvirew panel
-const panel = vscode.window.createWebviewPanel(
-	'KhariScriptContextResult',
-	'KhariScript - Context Match',
-	vscode.ViewColumn.Beside,
-	{}
-);
-
-panel.webview.html = `<pre style="padding:1rem;">${preview}</pre>`;
-});
 // Loads the HTML file from the media folder and injects secure URIs
 function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): string {
 	const path = require('path');
@@ -149,4 +53,158 @@ async function askGPT(prompt: string): Promise<string> {
 	}
 }
 
+import { generateEmbedding } from './embedding';
+import { generateTags } from './tags';
+import { saveToVault } from './storage';
+import { retrieveRelevantEntry } from './retrieve';
+
+export function activate(context: vscode.ExtensionContext) {
+    console.log('KhariScript extension is now active!');
+
+    // Analyze Code Command
+    const analyzeDisposable = vscode.commands.registerCommand('khariscript.analyzeCode', async () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            vscode.window.showErrorMessage('No active text editor found.');
+            return;
+        }
+        const selection = editor.selection;
+        const selectedText = editor.document.getText(selection);
+
+        if (!selectedText.trim()) {
+            vscode.window.showErrorMessage('Please select code to analyze.');
+            return;
+        }
+
+        const prompt = `
+Analyze the following code and provide:
+1. 📖 Code Breakdown (line-by-line, part-by-part explanation)
+2. 📍 Placement Advice (where this block belongs in the file)
+3. ⚠️ Issues & Warnings (if any)
+4. ✅ Suggestions for Improvement
+
+Code:
+${selectedText}
+        `;
+
+        const response = await askGPT(prompt);
+        vscode.window.showInformationMessage(response, { modal: true });
+    });
+
+    // Brainstorm Command
+    const brainstormDisposable = vscode.commands.registerCommand('khariscript.brainstorm', async () => {
+        const panel = vscode.window.createWebviewPanel(
+            'KhariScriptBrainstorm',
+            'KhariScript Brainstorm',
+            vscode.ViewColumn.One,
+            { enableScripts: true }
+        );
+        panel.webview.html = getWebviewContent(panel.webview, context.extensionUri);
+
+        panel.webview.onDidReceiveMessage(async (message) => {
+            if (message.type === 'brainstorm') {
+                const brainstormPrompt = `
+You are a senior software engineer with expertise in brainstorming and project planning.
+Your task is to help the user brainstorm ideas based on this input:
+"${message.prompt}"
+Please suggest relevant components, helper functions, file structures, or any technical suggestions that might assist the user. Respond in clear sections.
+`;
+                const response = await askGPT(brainstormPrompt);
+                panel.webview.postMessage({ type: 'response', data: response });
+            }
+        });
+    });
+
+    // View Stored By Tag Command
+    const viewStoredByTagCommand = vscode.commands.registerCommand('khariscript.viewStoredByTag', async () => {
+        const { loadVault } = await import('./storage.js');
+        const vault = loadVault();
+
+        if (vault.length === 0) {
+            vscode.window.showInformationMessage('No entries found in your vault.');
+            return;
+        }
+
+        const tagSet = new Set<string>();
+        vault.forEach(entry => entry.tags.forEach(tag => tagSet.add(tag)));
+        const tags = Array.from(tagSet);
+
+        if (tags.length === 0) {
+            vscode.window.showInformationMessage('No tags found in your vault.');
+            return;
+        }
+
+        const selectedTag = await vscode.window.showQuickPick(tags, {
+            placeHolder: 'Select a tag to view matching entries',
+        });
+        if (!selectedTag) return;
+
+        const matchingEntries = vault.filter(entry => entry.tags.includes(selectedTag));
+        const entryItems = matchingEntries.map(entry => ({
+            label: `${entry.filename} (${entry.filetype})`,
+            detail: entry.content.slice(0, 80).replace(/\s+/g, ' ') + '...',
+            fullContent: entry.content
+        }));
+
+        const selectedEntry = await vscode.window.showQuickPick(entryItems, {
+            placeHolder: `Entries tagged with "${selectedTag}"`,
+        });
+
+        if (selectedEntry) {
+            const doc = await vscode.workspace.openTextDocument({
+                content: selectedEntry.fullContent,
+                language: 'plaintext'
+            });
+            vscode.window.showTextDocument(doc);
+        }
+    });
+
+    // Store Context Command
+    const storeDisposable = vscode.commands.registerCommand('khariscript.storeContext', async () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            vscode.window.showErrorMessage('No active text editor');
+            return;
+        }
+        const selection = editor.selection;
+        const selectedText = editor.document.getText(selection);
+
+        if (!selectedText.trim()) {
+            vscode.window.showErrorMessage('Please select code to analyze');
+            return;
+        }
+
+        const result = retrieveRelevantEntry(selectedText);
+
+        if (!result) {
+            vscode.window.showInformationMessage('No relevant context found.');
+            return;
+        }
+
+        const preview = `
+📁 Source: ${result.source}
+🏷️ Tags: ${result.tags.join(', ')}
+🕒 Saved: ${result.timestamp}
+
+🧠 Content:
+${result.content.substring(0, 500)}
+`;
+
+        const panel = vscode.window.createWebviewPanel(
+            'KhariScriptContextResult',
+            'KhariScript - Context Match',
+            vscode.ViewColumn.Beside,
+            {}
+        );
+
+        panel.webview.html = `<pre style="padding:1rem;">${preview}</pre>`;
+    });
+
+    context.subscriptions.push(
+        analyzeDisposable,
+        brainstormDisposable,
+        viewStoredByTagCommand,
+        storeDisposable
+    );
+}
 export function deactivate() {}
