@@ -1,0 +1,16 @@
+import * as path from 'path';
+import * as os from 'os';
+import * as vscode from 'vscode';
+
+export function getVaultPath(): string {
+    const config = vscode.workspace.getConfiguration('khariscript');
+    const customPath = config.get<string>('vaultPath');
+
+    if (customPath && customPath.trim() !== '') {
+    return path.resolve(customPath); // use absolute version
+}
+
+    // fallback to default vault in home directory
+    return path.join(os.homedir(), '.kharivault.json');
+}
+
