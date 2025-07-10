@@ -1,14 +1,133 @@
 <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <h2>💡 Brainstorm with KhariScript</h2>
-    <textarea id="prompt" rows="5" placeholder="Describe what you're building..."></textarea>
-    <button onclick="sendPrompt()">Send</button>
-    <div id="output" style="margin-top:1rem;"></div>
-    <script src="script.js" charset="UTF-8"></script>
-  </body>
-  </html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>KhariScript Brainstorm</title>
+  <style>
+    
+    body {
+      background-color: #141f1d;
+      font-family: Arial, sans-serif;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #2b403e;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-size: cover;
+    }
+
+    .main {
+      padding: 2rem 4rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      background: #1f2e2c;
+      color: white;
+      border: 1px solid #3d5c58;
+      border-radius: 10px;
+      padding: 1rem;
+      resize: none;
+    }
+
+    .tags {
+      display: flex;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .tag-button {
+      background: #2b403e;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .tag-button.active {
+      background-color: #4fd1c5;
+      color: #141f1d;
+    }
+
+    .save-button {
+      background: #b2e5df;
+      color: #141f1d;
+      padding: 0.5rem 1.5rem;
+      font-weight: bold;
+      border-radius: 999px;
+      cursor: pointer;
+      float: right;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <div style="width: 20px;">
+        <svg viewBox="0 0 48 48" fill="white" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+          <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" fill="currentColor" />
+        </svg>
+      </div>
+      <h2>KhariScript</h2>
+    </div>
+    <div class="nav">
+      <a href="#">Home</a>
+      <a href="#">Brainstorm</a>
+      <a href="#">Code</a>
+      <a href="#">Debug</a>
+      <a href="#">Settings</a>
+    </div>
+    <div class="avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBo73EQIBJU9lOb6DNMYFg9WFP5ALM5ZlmhCIkasu0_2tuNPEo2xkWRH4npgKmZvYbhdiXWC5FVykDxGXTaGofL9sD6FBaML0DMlU0_5LDaefpI3VW9kniZjdZxIWPqTk4VHo6DhYKixJ0lVsVK4SNo8-c48crfr-h3nqyGMY0DyZCLlfGLddnxS6bipFfcdKC-gRdSbbUC8nA1_P6zT_OC-REdlg5B1PypJnjhZI1gSz0NJEHjKPReJuGTsOBLoaAkJkAZHkvje_cG');"></div>
+  </header>
+
+  <main class="main">
+    <h1>Brainstorm Ideas</h1>
+    <textarea id="brainstorm-input" placeholder="Type your brainstorming ideas here..."></textarea>
+
+    <div class="tags">
+      <button class="tag-button" data-tag="Feature">Feature</button>
+      <button class="tag-button" data-tag="Bug">Bug</button>
+      <button class="tag-button" data-tag="Design">Design</button>
+      <button class="tag-button" data-tag="Custom">Custom Tag</button>
+    </div>
+
+    <button id="save-brainstorm" class="save-button">Save</button>
+  </main>
+
+  <script src="./brainstorm.js"></script>
+</body>
+</html>
