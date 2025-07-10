@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo-section">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
+          <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" fill="currentColor"></path>
+        </svg>
+        <h2 class="logo-text">KhariScript</h2>
+      </div>
+      <nav class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="context.html">Context</a>
+        <a href="tutor.html">Tutor</a>
+      </nav>
+      <div class="profile-section">
+        <div
+          class="profile-pic"
+          style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCfXDpOu3q2M3v1OfUmXVxihkiEhbjwJ1Xb_Fq4Ffo2MiW77fVhn3vp_vRBAE9OvSsDb9xXSZ_WWyCBndxqeV6EJpXbrqECmNE_cAaE6dHICRH9KLMPE94U16xcay2a79mWhWMl9qZ8JRugzYE_0svE6KNspBqOY0oXzUhGPiCJn5Yx1WT9BvF4c0fT2yTa5_iL6HafcYYoOQ9z98J7wi2rZ4dDdN7V19AYwOniXZi4X0jalV_Q6siMVwZ_Q2kOtzLkyHxplGMJvDPF');"
+        ></div>
+      </div>
+    </header>
+
+    <main class="main-content dashboard-main">
+      <section class="search-section">
+        <label class="search-label" for="searchInput">Search Entries</label>
+        <div class="search-input-wrapper">
+          <div class="search-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
+              <path
+                d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"
+              ></path>
+            </svg>
+          </div>
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Search entries"
+            class="input-text"
+            aria-label="Search entries"
+          />
+        </div>
+      </section>
+
+      <section class="tags-section">
+        <button class="tag-btn">Python</button>
+        <button class="tag-btn">Data Analysis</button>
+        <button class="tag-btn">Machine Learning</button>
+        <button class="tag-btn">Web Development</button>
+        <button class="tag-btn">Algorithms</button>
+      </section>
+
+      <section class="entries-section">
+        <h3 class="section-title">Entries</h3>
+
+        <div class="entry-item">
+          <p class="entry-title">Data Cleaning Script</p>
+          <p class="entry-subtitle">Python</p>
+        </div>
+        <div class="entry-item">
+          <p class="entry-title">Model Training</p>
+          <p class="entry-subtitle">Machine Learning</p>
+        </div>
+        <div class="entry-item">
+          <p class="entry-title">API Integration</p>
+          <p class="entry-subtitle">Web Development</p>
+        </div>
+        <div class="entry-item">
+          <p class="entry-title">Sorting Algorithm</p>
+          <p class="entry-subtitle">Algorithms</p>
+        </div>
+        <div class="entry-item">
+          <p class="entry-title">Data Visualization</p>
+          <p class="entry-subtitle">Python</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="brainstorm.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
