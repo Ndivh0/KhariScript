@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prompt Tutor</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo-section">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
+          <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" fill="currentColor"></path>
+        </svg>
+        <h2 class="logo-text">KhariScript</h2>
+      </div>
+      <nav class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="context.html">Context</a>
+        <a href="tutor.html">Tutor</a>
+      </nav>
+      <div class="profile-section">
+        <button class="help-btn" title="Help">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M140,180a12,12,0,1,1-12-12A12,12,0,0,1,140,180ZM128,72c-22.06,0-40,16.15-40,36v4a8,8,0,0,0,16,0v-4c0-11,10.77-20,24-20s24,9,24,20-10.77,20-24,20a8,8,0,0,0-8,8v8a8,8,0,0,0,16,0v-.72c18.24-3.35,32-17.9,32-35.28C168,88.15,150.06,72,128,72Zm104,56A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"></path>
+          </svg>
+        </button>
+        <div
+          class="profile-pic"
+          style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCfXDpOu3q2M3v1OfUmXVxihkiEhbjwJ1Xb_Fq4Ffo2MiW77fVhn3vp_vRBAE9OvSsDb9xXSZ_WWyCBndxqeV6EJpXbrqECmNE_cAaE6dHICRH9KLMPE94U16xcay2a79mWhWMl9qZ8JRugzYE_0svE6KNspBqOY0oXzUhGPiCJn5Yx1WT9BvF4c0fT2yTa5_iL6HafcYYoOQ9z98J7wi2rZ4dDdN7V19AYwOniXZi4X0jalV_Q6siMVwZ_Q2kOtzLkyHxplGMJvDPF');"
+        ></div>
+      </div>
+    </header>
+
+    <main class="main-content tutor-main">
+      <h2 class="page-title">Prompt Tutor</h2>
+      <div class="input-area">
+        <input
+          type="text"
+          placeholder="Ask about this snippet"
+          class="input-text"
+          aria-label="Ask about this snippet"
+        />
+      </div>
+
+      <div class="tags-row">
+        <button class="tag-btn">Explain this</button>
+        <button class="tag-btn">How does this work?</button>
+        <button class="tag-btn">Best practices?</button>
+        <button class="tag-btn">Common mistakes?</button>
+        <button class="tag-btn">Alternatives?</button>
+      </div>
+
+      <section class="answer-section">
+        <div
+          class="profile-pic answer-profile-pic"
+          style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCq-JWARt13d8XtBzwl_wX-ZSlGsl6zopQEtOgr3VYN77rsHjtN09hZUDQxEy_u11YcQwgCGcbAEXaif6FhBNBf8RNb2CmWKfaDw-J_fmGiFv4awIiNm-ou85J9QnzSHhuEnFib-F-44EblTHBXzkh1J6WM4VV17adRK9jQNHewnkRKUQD5zS04IS78VT7NxTeMH8hYbYhocSNbE-1IHWtivIeuW3H56r3uBtyCmR2IXJ7CUpBCrqavB2KI-3ndnC1WW8nBZKVvEofi');"
+        ></div>
+        <div class="answer-text">
+          <p class="answer-author">AI Tutor</p>
+          <p class="answer-content">
+            This code snippet initializes a new instance of the 'DataProcessor' class, passing in a configuration object that specifies the data source as
+            'external_api' and sets the batch size to 100. The 'DataProcessor' class is responsible for handling data retrieval and processing tasks, and this
+            initialization configures it to fetch data from an external API in batches of 100 items.
+          </p>
+        </div>
+      </section>
+
+      <div class="actions-row">
+        <button class="action-btn">Save to Vault</button>
+      </div>
+    </main>
+  </div>
+
+  <script src="brainstorm.js"></script>
+</body>
+</html>
