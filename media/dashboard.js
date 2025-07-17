@@ -1,11 +1,14 @@
 import { saveSelectedEntry } from '../scripts/storage.js';
 
+let editingIndex = null;
+
 // Example data for entries
 let entryData = [
   {
     title: "Data Cleaning Script",
     subtitle: "Python, Data Analysis",
-    desc: "A script that automates cleaning and preprocessing of datasets, including handling missing values and normalizing formats."
+    desc: "A script that automates cleaning and preprocessing of datasets.",
+    project: "Personal"
   },
   {
     title: "Model Training",
@@ -25,6 +28,8 @@ function renderEntry(data) {
         <p class="entry-subtitle">${data.subtitle}</p>
       </div>
       <button class="action-btn entry-reflect-btn">Reflect</button>
+      <button class="action-btn entry-edit-btn">Edit</button>
+      <button class="action-btn entry-delete-btn">Delete</button>
     </div>
     <p class="entry-desc">${data.desc}</p>
   `;
@@ -174,3 +179,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// Example: Add Entry button handler (requires corresponding HTML)
+  document.getElementById('btn-add-entry').addEventListener('click', () => {
+    const entry = {
+      title: document.getElementById('entry-title-input').value,
+      subtitle: document.getElementById('entry-subtitle-input').value,
+      desc: document.getElementById('entry-desc-input').value,
+      project: document.getElementById('entry-project-input').value
+    };
+
+    if (editingIndex !== null) {
+      // Edit mode: update existing entry
+      entryData[editingIndex] = entry;
+      const vscode = acquireVsCodeApi();
+      vscode.postMessage({ command: 'updateEntry', index: editingIndex, data: entry });
+      editingIndex = null;
+      document.getElementById('btn-add-entry').textContent = 'Add Entry';
+    } else {
+      // Add mode: add new entry
+      saveEntryToVault(entry);
+    }
+
+    // Clear form after adding/editing
+    document.getElementById('entry-title-input').value = '';
+    document.getElementById('entry-subtitle-input').value = '';
+    document.getElementById('entry-desc-input').value = '';
+  });
+
+  let editingIndex = null;
+
+  document.querySelectorAll('.sidebar-list-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const selectedProject = btn.textContent;
+      document.querySelectorAll('.entry-item').forEach(entry => {
+        const project = entryData.find(e => e.title === entry.querySelector('.entry-title').textContent)?.project;
+        entry.style.display = (project === selectedProject) ? '' : 'none';
+      });
+    });
+  });
