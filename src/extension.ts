@@ -317,6 +317,18 @@ ${result.content.substring(0, 500)}
                 fs.writeFileSync(vaultPath, JSON.stringify(vault, null, 2), 'utf-8');
                 panel.webview.postMessage({ command: 'vaultData', data: vault });
             }
+             if (msg.command === 'saveProjects') {
+                const projectsPath = path.join(context.globalStorageUri.fsPath, 'projects.json');
+                fs.writeFileSync(projectsPath, JSON.stringify(msg.data, null, 2), 'utf-8');
+            }
+            if (msg.command === 'loadProjects') {
+                const projectsPath = path.join(context.globalStorageUri.fsPath, 'projects.json');
+                let projects = ["Personal", "Client Work", "Open Source", "Side Projects", "Archived"];
+                if (fs.existsSync(projectsPath)) {
+                    projects = JSON.parse(fs.readFileSync(projectsPath, 'utf-8'));
+                }
+                panel.webview.postMessage({ command: 'projectsData', data: projects });
+            }
         });
     });
 
