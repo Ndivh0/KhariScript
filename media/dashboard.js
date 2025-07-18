@@ -15,9 +15,9 @@ let entryData = [
     subtitle: "Machine Learning",
     desc: "Training ML models on prepared datasets with cross-validation and hyperparameter tuning."
   }
+  // Add more entries as needed
 ];
 
-// Renders one entry DOM element
 function renderEntry(data) {
   const article = document.createElement('article');
   article.className = 'entry-item';
@@ -36,18 +36,8 @@ function renderEntry(data) {
   return article;
 }
 
-// Load all entries into the DOM
-function loadEntries() {
-  const entriesList = document.querySelector('.entries-list');
-  entriesList.innerHTML = '';
-  entryData.forEach(data => {
-    const article = renderEntry(data);
-    entriesList.appendChild(article);
-  });
-  bindEntryEvents();
-}
-
 function bindEntryEvents() {
+  // Reflect button for each entry
   document.querySelectorAll('.entry-reflect-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const entry = btn.closest('.entry-item');
@@ -62,6 +52,36 @@ function bindEntryEvents() {
       }
     });
   });
+
+  // Edit button for each entry
+  document.querySelectorAll('.entry-edit-btn').forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+      const entry = entryData[idx];
+      document.getElementById('entry-title-input').value = entry.title;
+      document.getElementById('entry-subtitle-input').value = entry.subtitle;
+      document.getElementById('entry-desc-input').value = entry.desc;
+      editingIndex = idx;
+      document.getElementById('btn-add-entry').textContent = 'Save Changes';
+    });
+  });
+
+  // Delete button for each entry
+  document.querySelectorAll('.entry-delete-btn').forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+      const vscode = acquireVsCodeApi();
+      vscode.postMessage({ command: 'deleteEntry', index: idx });
+    });
+  });
+}
+
+function loadEntries() {
+  const entriesList = document.querySelector('.entries-list');
+  entriesList.innerHTML = '';
+  entryData.forEach(data => {
+    const article = renderEntry(data);
+    entriesList.appendChild(article);
+  });
+  bindEntryEvents();
 }
 
 function saveEntryToVault(entry) {
@@ -164,23 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Example: Add Entry button handler (requires corresponding HTML)
-  const addEntryBtn = document.getElementById('btn-add-entry');
-  if (addEntryBtn) {
-    addEntryBtn.addEventListener('click', () => {
-      const entry = {
-        title: document.getElementById('entry-title-input').value,
-        subtitle: document.getElementById('entry-subtitle-input').value,
-        desc: document.getElementById('entry-desc-input').value
-      };
-      saveEntryToVault(entry);
-      document.getElementById('entry-title-input').value = '';
-      document.getElementById('entry-subtitle-input').value = '';
-      document.getElementById('entry-desc-input').value = '';
-    });
-  }
-});
-
-// Example: Add Entry button handler (requires corresponding HTML)
   document.getElementById('btn-add-entry').addEventListener('click', () => {
     const entry = {
       title: document.getElementById('entry-title-input').value,
@@ -218,3 +221,4 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
+});
