@@ -83,6 +83,7 @@
 
             <button id="btn-import" class="action-btn">Import Entry</button>
             <button id="btn-compare" class="action-btn">Compare Entries</button>
+            <button id="btn-export" class="action-btn">Export Entries</button>
           </div>
 
           <!-- Tags Filter -->
@@ -99,6 +100,7 @@
             <button class="tag-btn">Webpack</button>
             <button class="tag-btn">Testing</button>
             <button class="tag-btn">UI/UX</button>
+            <button id="btn-clear-tags" class="action-btn">Clear Tags</button>
           </div>
 
            <!-- Add Entry Form -->
@@ -133,6 +135,7 @@
                   A script that automates cleaning and preprocessing of datasets,
                   including handling missing values and normalizing formats.
                 </p>
+                <p class="entry-meta">Last edited: ${data.lastEdited ? new Date(data.lastEdited).toLocaleString() : 'N/A'}</p>
               </article>
               <!-- More entries... -->
               <article class="entry-item">
@@ -146,6 +149,7 @@
                 <p class="entry-desc">
                   Training ML models on prepared datasets with cross-validation and hyperparameter tuning.
                 </p>
+                <p class="entry-meta">Last edited: ${data.lastEdited ? new Date(data.lastEdited).toLocaleString() : 'N/A'}</p>
               </article>
             </div>
           </div>
@@ -166,6 +170,9 @@
         </section>
       </div>
     </main>
+    <div id="loading-indicator" style="display:none;text-align:center;padding:1rem;">
+      <span>Loading...</span>
+    </div>
     <script src="dashboard.js"></script>
   </div>
 </body>
