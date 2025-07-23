@@ -2,132 +2,106 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KhariScript Brainstorm</title>
-  <style>
-    
-    body {
-      background-color: #141f1d;
-      font-family: Arial, sans-serif;
-      color: white;
-      margin: 0;
-      padding: 0;
-    }
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      border-bottom: 1px solid #2b403e;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .nav {
-      display: flex;
-      gap: 1.5rem;
-    }
-
-    .nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-size: cover;
-    }
-
-    .main {
-      padding: 2rem 4rem;
-      max-width: 960px;
-      margin: 0 auto;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 120px;
-      background: #1f2e2c;
-      color: white;
-      border: 1px solid #3d5c58;
-      border-radius: 10px;
-      padding: 1rem;
-      resize: none;
-    }
-
-    .tags {
-      display: flex;
-      gap: 1rem;
-      margin: 1rem 0;
-    }
-
-    .tag-button {
-      background: #2b403e;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 999px;
-      color: white;
-      cursor: pointer;
-    }
-
-    .tag-button.active {
-      background-color: #4fd1c5;
-      color: #141f1d;
-    }
-
-    .save-button {
-      background: #b2e5df;
-      color: #141f1d;
-      padding: 0.5rem 1.5rem;
-      font-weight: bold;
-      border-radius: 999px;
-      cursor: pointer;
-      float: right;
-      border: none;
-    }
-  </style>
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap"
+  />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <header>
-    <div class="logo">
-      <div style="width: 20px;">
-        <svg viewBox="0 0 48 48" fill="white" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-          <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" fill="currentColor" />
-        </svg>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-section">
+        <div class="logo-svg">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <span class="logo-text">KhariScript</span>
       </div>
-      <h2>KhariScript</h2>
-    </div>
-    <div class="nav">
-      <a href="#">Home</a>
-      <a href="#">Brainstorm</a>
-      <a href="#">Code</a>
-      <a href="#">Debug</a>
-      <a href="#">Settings</a>
-    </div>
-    <div class="avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBo73EQIBJU9lOb6DNMYFg9WFP5ALM5ZlmhCIkasu0_2tuNPEo2xkWRH4npgKmZvYbhdiXWC5FVykDxGXTaGofL9sD6FBaML0DMlU0_5LDaefpI3VW9kniZjdZxIWPqTk4VHo6DhYKixJ0lVsVK4SNo8-c48crfr-h3nqyGMY0DyZCLlfGLddnxS6bipFfcdKC-gRdSbbUC8nA1_P6zT_OC-REdlg5B1PypJnjhZI1gSz0NJEHjKPReJuGTsOBLoaAkJkAZHkvje_cG');"></div>
-  </header>
+      <nav class="nav-links">
+        <a href="dashboard.html" class="hover:underline">Dashboard</a>
+        <a href="brainstorm.html" class="hover:underline">Brainstorm</a>
+        <a href="context.html" class="hover:underline">Context</a>
+        <a href="tutor.html" class="hover:underline">Tutor</a>
+        <a href="#" class="hover:underline">Settings</a>
+      </nav>
+      <div
+        class="profile-pic"
+        style='background-image: url("https://lh3.googleusercontent.com/aida-public/...");'
+      ></div>
+    </header>
 
-  <main class="main">
-    <h1>Brainstorm Ideas</h1>
-    <textarea id="brainstorm-input" placeholder="Type your brainstorming ideas here..."></textarea>
+    <!-- Main Content -->
+    <main class="main-content">
+      <div>
+        <!-- Title -->
+        <div class="brainstorm-title-row">
+          <h1 class="page-title">Brainstorm Ideas</h1>
+        </div>
 
-    <div class="tags">
-      <button class="tag-button" data-tag="Feature">Feature</button>
-      <button class="tag-button" data-tag="Bug">Bug</button>
-      <button class="tag-button" data-tag="Design">Design</button>
-      <button class="tag-button" data-tag="Custom">Custom Tag</button>
-    </div>
+        <!-- Tag Selection -->
+        <div class="flex gap-3 py-4">
+          <div>JavaScript</div>
+          <div>React</div>
+          <div>TypeScript</div>
+          <div>CSS</div>
+          <div>HTML</div>
+          <div>Node.js</div>
+          <div>Next.js</div>
+          <div>GraphQL</div>
+          <div>REST API</div>
+          <div>Webpack</div>
+          <div>Testing</div>
+          <div>UI/UX</div>
+        </div>
 
-    <button id="save-brainstorm" class="save-button">Save</button>
-  </main>
+        <!-- Textarea and Action Buttons -->
+        <div class="brainstorm-input-row">
+          <textarea
+            id="brainstorm-input"
+            placeholder="Type your brainstorming ideas here..."
+            class="input-text brainstorm-textarea"
+            rows="3"
+          ></textarea>
 
-  <script src="./brainstorm.js"></script>
+          <div class="brainstorm-actions-row" style="margin: 1rem 0;">
+            <button id="btn-brainstorm" class="action-btn">Brainstorm</button>
+            <button id="btn-rephrase" class="action-btn">Rephrase Idea</button>
+            <button id="btn-attach-file" class="action-btn">Attach File / URL</button>
+            <button id="btn-turn-prompt" class="action-btn">Turn Into Prompt</button>
+            <button id="btn-generate-plan" class="action-btn">Summarize & Plan</button>
+          </div>
+        </div>
+
+        <!-- Export Format -->
+        <label for="export-format">Export as:</label>
+        <select id="export-format" class="input-text">
+          <option value="markdown">Markdown</option>
+          <option value="pdf">PDF</option>
+          <option value="vault">Vault</option>
+        </select>
+
+        <!-- Brainstorm Response Section -->
+        <div id="brainstorm-output" class="brainstorm-output" style="margin-top:1rem; min-height:200px; border:1px solid #ccc; border-radius:8px; padding:1rem; background:#f8f8f8; overflow-y:auto;">
+          <!-- Dynamic GPT chat-style replies will appear here -->
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loading-indicator" style="display:none;text-align:center; margin-top:1rem;">
+          <!-- Loading spinner or message -->
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="brainstorm.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 </body>
 </html>
